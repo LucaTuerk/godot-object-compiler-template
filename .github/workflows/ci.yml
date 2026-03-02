@@ -75,11 +75,6 @@ jobs:
             ${{github.workspace}}/godot-object-compiler/build/
             ${{github.workspace}}/.scons-cache/
 
-      - name: Force mac goc rebuild
-        if: ${{matrix.target.os == 'macos-latest'}}
-        run: |
-          rm ${{github.workspace}}/godot-object-compiler/build/goc || true
-
       - name: Build GDExtension Debug Build
         shell: sh
         env:

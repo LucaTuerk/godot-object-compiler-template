@@ -85,11 +85,12 @@ def find_goc(env: Environment):
         goc_source = glob(f"{src_dir}/src/**/*.cpp", recursive=True)
         goc_headers = glob(f"{src_dir}/src/**/*.h", recursive=True)
         goc_source.extend(goc_headers)
-        env.Command(
+        build_goc = env.Command(
             exec_path,
             source=goc_source,
             action=Action(goc_build, cmdstr="Godot Object Compiler: Building Tool"),
         )
+        env.NoCache(build_goc)
 
         print(f"Using built GOC executable: {exec_path}")
         return exec_path
@@ -146,6 +147,7 @@ def create_goc_shared_library(env: Environment, lib_name: str, source, root_path
     run_goc = env.Command(generated_source, source=[], action=run_action)
     env.SideEffect(generated_headers, run_goc)
     env.AlwaysBuild(run_goc)
+    env.NoCache(run_goc)  # goc uses its own cache
     env.Alias("goc_generated", generated_source)
     env.Depends(run_goc, goc_path)
 
