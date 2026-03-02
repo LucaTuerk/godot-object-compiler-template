@@ -132,24 +132,16 @@ def create_goc_shared_library(env: Environment, lib_name: str, source, root_path
     )
     comma = ","
 
-    # run_action = Action(
-    #     f"{goc_path} generate \
-    #         -P={goc_dir} \
-    #         -C={cache_dir} \
-    #         -G={generated_dir} \
-    #         -I={comma.join(str(f) for f in include_dirs)} \
-    #         -S={comma.join(str(f) for f in sources)} \
-    #         -R={root_dir}",
-    #     cmdstr="Godot Object Compiler: Generating bindings",
-    # )
-
-    run_action = f"{goc_path} generate \
-        -P={goc_dir} \
-        -C={cache_dir} \
-        -G={generated_dir} \
-        -I={comma.join(str(f) for f in include_dirs)} \
-        -S={comma.join(str(f) for f in sources)} \
-        -R={root_dir}"
+    run_action = Action(
+        f"{goc_path} generate \
+            -P={goc_dir} \
+            -C={cache_dir} \
+            -G={generated_dir} \
+            -I={comma.join(str(f) for f in include_dirs)} \
+            -S={comma.join(str(f) for f in sources)} \
+            -R={root_dir}",
+        cmdstr="Godot Object Compiler: Generating bindings",
+    )
 
     run_goc = env.Command(generated_source, source=[], action=run_action)
     env.SideEffect(generated_headers, run_goc)
