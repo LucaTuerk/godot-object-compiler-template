@@ -70,7 +70,6 @@ def goc_build(target, source, env):
     space = " "
     subprocess.run(space.join(configure), shell=True, env=environ.copy())
     subprocess.run(space.join(build), shell=True, env=environ.copy())
-    subprocess.run(f"ls {build_dir}", shell=True, env=environ.copy())
 
 
 def find_goc(env: Environment):
@@ -86,12 +85,11 @@ def find_goc(env: Environment):
         goc_source = glob(f"{src_dir}/src/**/*.cpp", recursive=True)
         goc_headers = glob(f"{src_dir}/src/**/*.h", recursive=True)
         goc_source.extend(goc_headers)
-        build_goc = env.Command(
+        env.Command(
             exec_path,
             source=goc_source,
             action=Action(goc_build, cmdstr="Godot Object Compiler: Building Tool"),
         )
-        env.AlwaysBuild(build_goc)
 
         print(f"Using built GOC executable: {exec_path}")
         return exec_path
