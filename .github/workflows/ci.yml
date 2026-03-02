@@ -75,10 +75,10 @@ jobs:
             ${{github.workspace}}/godot-object-compiler/build/
             ${{github.workspace}}/.scons-cache/
 
-      - name: Fix Mac Permissions
+      - name: Force mac goc rebuild
         if: ${{matrix.target.os == 'macos-latest'}}
         run: |
-          chmod +x ${{github.workspace}}/godot-object-compiler/build/goc || true
+          rm ${{github.workspace}}/godot-object-compiler/build/goc || true
 
       - name: Build GDExtension Debug Build
         shell: sh
